@@ -1,11 +1,19 @@
 import styled from '@emotion/styled';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 
-export interface TimeInputProps {
+import TextField, { StyledTextField } from '../text-field/text-field';
+
+interface TimeInputOnChangeParams<T> {
+  id: T;
+  time: number;
+  errorMessage?: string;
+}
+
+export interface TimeInputProps<T extends string> {
   label?: string;
-  id: string;
+  id: T;
   timeInSeconds: number;
-  onChange: (time: number) => void;
+  onChange: (params: TimeInputOnChangeParams<T>) => void;
 }
 
 const Wrapper = styled.div`
@@ -23,69 +31,49 @@ const StyledTimeInput = styled.div`
   align-items: center;
   font-size: 1.2rem;
 
-  input {
-    display: inline-block;
-    padding: 0.6rem 0.8rem;
-    width: 100%;
-    height: 100%;
-    border: 0;
-    box-sizing: border-box;
-    font-size: 1.4rem;
-    text-align: center;
-
-    :focus {
-      outline: none;
-    }
-  }
-
-  div {
-    position: relative;
+  ${StyledTextField} {
     width: 3.6rem;
-    overflow: hidden;
-
-    ::after {
-      display: block;
-      position: absolute;
-      bottom: 0;
-      width: 100%;
-      height: 0.2rem;
-      transform: translate(-100%, 100%);
-      background-color: var(--theme-color-primary, #000);
-      content: '';
-      transition: transform 0.2s;
-    }
-
-    :focus-within {
-      ::after {
-        transform: translate(0, 0);
-      }
-    }
   }
 `;
 
-export function TimeInput({
+export function TimeInput<K extends string>({
   label,
   id,
   timeInSeconds,
   onChange,
-}: TimeInputProps) {
+}: TimeInputProps<K>) {
+  const [isMinutesInvalid, setMinutesInvalid] = useState<boolean>();
+  const [isSecondsInvalid, setSecondsInvalid] = useState<boolean>();
+
   const currentMinutes = Math.floor(timeInSeconds / 60);
   const currentSeconds = timeInSeconds % 60;
 
   const handleMinutesChange: React.ChangeEventHandler<HTMLInputElement> =
     useCallback(
       (e) => {
-        onChange(Number(e.currentTarget.value) * 60 + currentSeconds);
+        const minutes = parseInt(e.currentTarget.value, 10) * 60;
+        const errorMessage =
+          Number.isNaN(minutes) || minutes < 0
+            ? '분은 0 또는 0 보다 커야 합니다.'
+            : undefined;
+        setMinutesInvalid(!!errorMessage);
+        onChange({ id, time: minutes + currentSeconds, errorMessage });
       },
-      [currentSeconds, onChange]
+      [currentSeconds, onChange, id]
     );
 
   const handleSecondsChange: React.ChangeEventHandler<HTMLInputElement> =
     useCallback(
       (e) => {
-        onChange(currentMinutes * 60 + Number(e.currentTarget.value));
+        const seconds = parseInt(e.currentTarget.value, 10);
+        const errorMessage =
+          Number.isNaN(seconds) || seconds < 0 || seconds > 59
+            ? '초는 0-59 사이의 숫자여야 합니다.'
+            : undefined;
+        setSecondsInvalid(!!errorMessage);
+        onChange({ id, time: currentMinutes * 60 + seconds, errorMessage });
       },
-      [currentMinutes, onChange]
+      [currentMinutes, onChange, id]
     );
 
   return (
@@ -93,23 +81,26 @@ export function TimeInput({
       {label && <label htmlFor={`${id}:minutes`}>{label}</label>}
 
       <StyledTimeInput>
-        <div>
-          <input
-            type="text"
-            name={`${id}:minutes`}
-            onChange={handleMinutesChange}
-            defaultValue={currentMinutes.toString().padStart(2, '0')}
-          />
-        </div>
+        <TextField
+          key={`${id}:minutes`}
+          type="number"
+          name={`${id}:minutes`}
+          min={0}
+          onChange={handleMinutesChange}
+          defaultValue={currentMinutes.toString().padStart(2, '0')}
+          invalid={isMinutesInvalid}
+        />
         :
-        <div>
-          <input
-            type="text"
-            name={`${id}:seconds`}
-            onChange={handleSecondsChange}
-            defaultValue={currentSeconds.toString().padStart(2, '0')}
-          />
-        </div>
+        <TextField
+          key={`${id}:seconds`}
+          type="number"
+          name={`${id}:seconds`}
+          min={0}
+          max={59}
+          onChange={handleSecondsChange}
+          defaultValue={currentSeconds.toString().padStart(2, '0')}
+          invalid={isSecondsInvalid}
+        />
       </StyledTimeInput>
     </Wrapper>
   );
