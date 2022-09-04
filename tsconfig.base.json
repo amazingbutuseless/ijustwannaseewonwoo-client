@@ -18,6 +18,9 @@
       "@ijustwannaseewonwoo-client/types": ["packages/types/src/index.ts"],
       "@ijustwannaseewonwoo-client/ui-components": [
         "packages/ui-components/src/index.ts"
+      ],
+      "@ijustwannaseewonwoo-client/util-format": [
+        "packages/util-format/src/index.ts"
       ]
     }
   },

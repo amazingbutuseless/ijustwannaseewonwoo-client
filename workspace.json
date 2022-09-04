@@ -3,6 +3,7 @@
   "version": 2,
   "projects": {
     "types": "packages/types",
-    "ui-components": "packages/ui-components"
+    "ui-components": "packages/ui-components",
+    "util-format": "packages/util-format"
   }
 }
