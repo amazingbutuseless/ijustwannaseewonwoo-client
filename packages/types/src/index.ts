@@ -1,1 +1,1 @@
-export * from './lib/wonwoo-video';
+export * from './lib/types';
