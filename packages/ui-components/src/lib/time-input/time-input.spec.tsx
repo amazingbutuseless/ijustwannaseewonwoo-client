@@ -4,7 +4,7 @@ import TimeInput, { TimeInputProps } from './time-input';
 
 const onChange = jest.fn();
 
-function renderComponent(args: Omit<TimeInputProps, 'id'>) {
+function renderComponent(args: Omit<TimeInputProps<'test'>, 'id'>) {
   return render(<TimeInput {...args} id="test" />);
 }
 
@@ -82,7 +82,7 @@ describe('TimeInput', () => {
         '[name="test:minutes"]'
       ) as HTMLInputElement;
       fireEvent.change(minutesInput, { target: { value: '4' } });
-      expect(onChange).toBeCalledWith(240);
+      expect(onChange).toBeCalledWith({ id: 'test', time: 240 });
     });
 
     it('should invoke onChange with proper calculated value if seconds changed', () => {
@@ -94,7 +94,7 @@ describe('TimeInput', () => {
         '[name="test:seconds"]'
       ) as HTMLInputElement;
       fireEvent.change(secondsInput, { target: { value: '15' } });
-      expect(onChange).toBeCalledWith(255);
+      expect(onChange).toBeCalledWith({ id: 'test', time: 255 });
     });
   });
 });

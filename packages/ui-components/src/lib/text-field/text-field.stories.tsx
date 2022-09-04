@@ -6,6 +6,7 @@ export default {
   component: TextField,
   argTypes: {
     invalid: { control: 'boolean' },
+    $size: { control: 'select', options: ['s', 'm'] },
   },
 } as ComponentMeta<typeof TextField>;
 

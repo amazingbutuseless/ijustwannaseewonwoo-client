@@ -16,7 +16,18 @@ function getStyleBySize(size: StyledButtonProps['size'] = 'm') {
   `;
 }
 
-function getStyleByTheme(theme: StyledButtonProps['$theme'] = 'default') {
+function getStyleByTheme(
+  theme: StyledButtonProps['$theme'] = 'default',
+  outlined = false
+) {
+  if (outlined) {
+    return css`
+      border-color: var(--button-${theme}-bg-color);
+      background-color: transparent;
+      color: var(--button-${theme}-bg-color);
+    `;
+  }
+
   return css`
     background-color: var(--button-${theme}-bg-color, #000);
     color: var(--button-${theme}-font-color, #fff);
@@ -38,18 +49,17 @@ function getStyleByInline(inline: StyledButtonProps['inline'] = true) {
 }
 
 export const StyledButton = styled.button<StyledButtonProps>`
-  ${({ size }) => getStyleBySize(size)}
-  ${({ $theme }) => getStyleByTheme($theme)}
   ${({ inline }) => getStyleByInline(inline)};
+  ${({ size }) => getStyleBySize(size)}
+
+  border: 1px solid transparent;
+  ${({ $theme, outlined }) => getStyleByTheme($theme, outlined)}
 
   place-content: center;
   align-items: center;
-  border: ${({ outlined, $theme = 'default' }) =>
-    `1px solid ${
-      outlined ? `var(--button-${$theme}-outline-color, #000)` : 'transparent'
-    }`};
   box-sizing: border-box;
-  border-radius: 0.2rem;
+  border-radius: 0.4rem;
+  text-transform: uppercase;
   cursor: pointer;
 
   &:disabled {

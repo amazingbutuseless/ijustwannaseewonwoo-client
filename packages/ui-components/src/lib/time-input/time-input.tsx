@@ -16,23 +16,23 @@ export interface TimeInputProps<T extends string> {
   onChange: (params: TimeInputOnChangeParams<T>) => void;
 }
 
-const Wrapper = styled.div`
+export const Wrapper = styled.div`
   display: inline-flex;
   flex-direction: column;
 
   label {
     font-size: 1.2rem;
-    color: var(--theme-color-form-label, #666);
+    text-align: center;
   }
 `;
 
 const StyledTimeInput = styled.div`
   display: flex;
   align-items: center;
-  font-size: 1.2rem;
+  font-size: var(--typography-body-font-size-m);
 
   ${StyledTextField} {
-    width: 3.6rem;
+    width: 4.8rem;
   }
 `;
 
@@ -89,6 +89,8 @@ export function TimeInput<K extends string>({
           onChange={handleMinutesChange}
           defaultValue={currentMinutes.toString().padStart(2, '0')}
           invalid={isMinutesInvalid}
+          $size="m"
+          placeholder="00"
         />
         :
         <TextField
@@ -100,6 +102,8 @@ export function TimeInput<K extends string>({
           onChange={handleSecondsChange}
           defaultValue={currentSeconds.toString().padStart(2, '0')}
           invalid={isSecondsInvalid}
+          $size="m"
+          placeholder="00"
         />
       </StyledTimeInput>
     </Wrapper>
