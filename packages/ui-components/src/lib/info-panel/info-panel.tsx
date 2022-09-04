@@ -39,7 +39,7 @@ export const StyledInfoPanel = styled.div<Pick<InfoPanelProps, '$type'>>`
     ::before {
       ${({ $type = 'default' }) => {
         if ($type === 'warning') {
-          return getMaterialIcon('\\e002');
+          return getMaterialIcon('\\e000');
         }
         if ($type === 'danger') {
           return getMaterialIcon('\\e99a');

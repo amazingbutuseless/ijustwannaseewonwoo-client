@@ -23,7 +23,7 @@ const Wrapper = styled.section`
       color: var(--typography-heading-font-color-secondary);
 
       ::before {
-        font-size: 2.4rem;
+        font-size: 2rem;
         margin-right: 0.8rem;
         content: '😿';
       }
