@@ -4,7 +4,7 @@ export function Global() {
   return (
     <EmotionGlobal
       styles={css`
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans&family=Noto+Sans+KR&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans&family=Noto+Sans+KR&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0&family=Raleway:wght@500&display=swap');
 
         :root {
           --theme-color-primary: #9d4eddff;

@@ -1,3 +1,4 @@
+export * from './lib/logo/logo';
 export * from './lib/info-panel/info-panel';
 export * from './lib/global/global';
 export * from './lib/text-field/text-field';
